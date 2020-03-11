@@ -1,0 +1,10 @@
+apiVersion: canaria.shareit.com/v1beta1
+kind: Canaria
+metadata:
+  name: scmp-hulk-b
+  namespace: sgt
+spec:
+  targetSize: 1
+  stage: 1
+  images:
+    hulk: "swr.ap-southeast-3.myhuaweicloud.com/shareit-sgt/hulk:v1.7.4"

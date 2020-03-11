@@ -1,0 +1,3 @@
+version: "1"
+domain: shareit.com
+repo: github.com/iyacontrol/canaria-controller

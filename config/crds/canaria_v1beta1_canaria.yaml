@@ -1,0 +1,50 @@
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    controller-tools.k8s.io: "1.0"
+  name: canaria.canaria.shareit.com
+spec:
+  group: canaria.shareit.com
+  names:
+    kind: Canaria
+    plural: canaria
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+        spec:
+          properties:
+            images:
+              type: object
+            stage:
+              format: int32
+              type: integer
+            targetSize:
+              format: int32
+              type: integer
+          required:
+          - targetSize
+          - images
+          - stage
+          type: object
+        status:
+          properties:
+            lastUpdateTime:
+              format: date-time
+              type: string
+          type: object
+  version: v1beta1
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

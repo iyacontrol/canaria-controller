@@ -146,7 +146,7 @@ func (r *ReconcileCanaria) Reconcile(request reconcile.Request) (reconcile.Resul
 		return reconcile.Result{}, err
 	}
 
-	canariaDeployName := request.Name + "-canaria"
+	canariaDeployName := request.Name + "-canary"
 
 	canary := appsv1.Deployment{
 		TypeMeta: deploy.TypeMeta,

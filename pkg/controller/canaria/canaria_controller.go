@@ -98,6 +98,16 @@ func updatePredicate(ev event.UpdateEvent) bool {
 	return false
 }
 
+func createPredicate(ev event.CreateEvent) bool {
+	object := ev.Object.(*canariav1beta1.Canaria)
+	// Add the chpa object to the queue only if the spec has changed.
+	// Status change should not lead to a requeue.
+	if ok := object.Spec.Stage == canariav1beta1.K8sDeployStageRollBack || object.Spec.Stage == canariav1beta1.K8sDeployStageRollup; ok {
+		return false
+	}
+	return true
+}
+
 // add adds a new Controller to mgr with r as the reconcile.Reconciler
 func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	// Create a new controller
@@ -107,8 +117,12 @@ func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	}
 
 	// Watch for changes to CHPA
-	predicate := predicate.Funcs{UpdateFunc: updatePredicate}
-	err = c.Watch(&source.Kind{Type: &canariav1beta1.Canaria{}}, &handler.EnqueueRequestForObject{}, predicate)
+	err = c.Watch(&source.Kind{Type: &canariav1beta1.Canaria{}}, &handler.EnqueueRequestForObject{},
+		predicate.Funcs{
+			UpdateFunc: updatePredicate,
+			CreateFunc: createPredicate,
+		},
+	)
 	if err != nil {
 		return err
 	}
